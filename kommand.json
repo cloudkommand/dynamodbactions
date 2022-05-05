@@ -1,0 +1,24 @@
+{
+    "components": {
+        "write": {
+            "type": "ext",
+            "policy": {
+                "Version": "2012-10-17",
+                "Statement": [{
+                    "Sid": "Vis",
+                    "Effect": "Allow",
+                    "Action": [
+                        "dynamodb:ConditionCheckItem",
+                        "dynamodb:DeleteItem",
+                        "dynamodb:PutItem",
+                        "dynamodb:UpdateItem",
+                        "dynamodb:DescribeTable",
+                        "dynamodb:GetItem",
+                        "dynamodb:Query"
+                    ],
+                    "Resource": "*"
+                }]
+            }
+        }
+    }
+}
