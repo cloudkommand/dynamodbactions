@@ -242,7 +242,8 @@ def upsert_rec_robust(table_name, values, pkey_name=None, skey_name=None, condit
         response = dynamodb.update_item(**payload)
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] in ["RequestLimitExceeded", "InternalServerError", "TransactionConflictException"]:
-            time.sleep(0.1)
+            time.sleep(0.3)
+            print(f"grist: {e.response['Error']['Code']}")
             return upsert_rec_robust(table_name, values, pkey_name, skey_name, condition_expression, condition_expression_values, return_values, remove_attribs, remove_ddb)
         else:
             print(f"Error in upsert_rec_robust")
