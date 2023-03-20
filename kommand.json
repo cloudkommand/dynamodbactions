@@ -2,6 +2,11 @@
     "components": {
         "write": {
             "type": "ext",
+            "displayname": "CK DynamoDB Write Records",
+            "description": "Writes records to a DynamoDB Table.",
+            "cloud": "AWS",
+            "ck_plugin_tier": 3,
+            "resources": ["AWS::dynamodb::item"],
             "policy": {
                 "Version": "2012-10-17",
                 "Statement": [{
@@ -18,7 +23,84 @@
                     ],
                     "Resource": "*"
                 }]
-            }
+            },
+            "input": {
+                "type": "object",
+                "properties": {
+                    "table_name": {
+                        "type": "string",
+                        "description": "The name of the DynamoDB table to write to."
+                    },
+                    "items": {
+                        "type": "array",
+                        "description": "The items, in JSON format, to write to the table.",
+                        "items": {
+                            "type": "object"
+                        }
+                    }
+                },
+                "required": ["table_name", "items"]
+            },
+            "examples": [
+                {
+                    "displayname": "A Single Record with a Partition Key",
+                    "notes": "The pkey is named 'pkey' in this example.",
+                    "definition": {
+                        "type": "&dynamodbactions.write",
+                        "table_name": "&my_table:props.name",
+                        "items": [
+                            {
+                                "pkey": "11111111-1111-1111-1111-111111110000",
+                                "name": "John Smith",
+                                "age": 30,
+                                "attribute": "value",
+                                "attribute2": false,
+                                "listattribute": ["item1", "item2", "item3"],
+                                "mapattribute": {
+                                    "key1": "value1",
+                                    "key2": "value2"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "displayname": "Multiple Records with Partition and Sort Keys",
+                    "notes": "The pkey is named 'pkey' and the skey is named 'skey' in this example.",
+                    "definition": {
+                        "type": "&dynamodbactions.write",
+                        "table_name": "&my_table_2:props.name",
+                        "items": [
+                            {
+                                "pkey": "Account",
+                                "skey": "11111111-1111-1111-1111-111111110000",
+                                "name": "John Smith",
+                                "age": 30,
+                                "attribute": "value",
+                                "attribute2": false,
+                                "listattribute": ["item1", "item2", "item3"],
+                                "mapattribute": {
+                                    "key1": "value1",
+                                    "key2": "value2"
+                                }
+                            },
+                            {
+                                "pkey": "Google",
+                                "skey": "22222222-2222-2222-2222-222222220000",
+                                "name": "Jane Doe",
+                                "age": 25,
+                                "attribute": "value",
+                                "attribute2": true,
+                                "listattribute": ["item1", "item2", "item309"],
+                                "mapattribute": {
+                                    "key1": "value10",
+                                    "key2": "value20"
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
         }
     }
 }
